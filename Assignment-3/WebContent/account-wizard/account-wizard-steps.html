@@ -1,0 +1,119 @@
+
+
+<form name="acctWizardForm" class="form-horizontal" ng-controller="acctWizardController">
+	<div class="container-fluid">
+		<ol class="track-progress" data-steps="3">
+			<a href ng-click="enableStep(1)" data-target="#step1"><li
+				class="{{wizardProgress[0].isEnabled}}"><span>Step
+						One:Light</span> <i></i></li></a>
+			<!--
+-->
+			<a href ng-click="enableStep(2)" data-target="#step2"><li
+				class="{{wizardProgress[1].isEnabled}}"><span>Step
+						Two:Standard</span> <i></i></li></a>
+			<!--
+-->
+			<a href ng-click="enableStep(3)" data-target="#step3"><li
+				class="{{wizardProgress[2].isEnabled}}"><span>Step
+						Three:Plus</span> <i></i></li></a>
+			<!--
+-->
+			<a href ng-click="enableStep(4)" data-target="#step4"><li
+				class="{{wizardProgress[3].isEnabled}}"><span>Step
+						Four:Premium</span> <i></i></li></a>
+		</ol>
+
+		<div id="step1" ng-if="wizardProgress[0].showCard"
+			class="card-border">
+			<div class="new-line">
+				<p>Please verify below details and continue next step to opt for
+					standard account type. If you do not want to proceed, please click
+					'Conclude'.</p>
+			</div>
+
+			<div class="container">
+
+				<div class="form-group">
+					<!-- User name field !-->
+					<label class="control-label">User name</label>
+					{{userDetails.user_name}}
+				</div>
+				<div class="form-group">
+					<!-- First name field !-->
+					<label class="control-label">First name</label>
+					{{userDetails.first_name}}
+				</div>
+				<div class="form-group">
+					<!-- Last name field !-->
+					<label class="control-label">Last name</label>
+					{{userDetails.last_name}}
+				</div>
+				<div class="form-group">
+					<!-- Email field !-->
+					<label class="control-label">Email</label> {{userDetails.email}}
+				</div>
+
+				<div class="form-group">
+					<button class="btn btn-primary" ng-click="trackProgress(1)">Next
+						step</button>
+					<a href="#summary"><button class="btn btn-primary"
+							ng-click="setSummary()">Conclude</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="step2" ng-if="wizardProgress[1].showCard"
+		class="card-border">
+		{{summary}}
+		<div class="container">
+			<div class="checkbox">
+				<label><input type="checkbox"
+					ng-model="wizardProgress[1].isOptedForPlus">Check to opt
+					for Plus account type</label>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" ng-click="preProgress(2)">Previous
+					step</button>
+				<button class="btn btn-primary" ng-click="trackProgress(2)">Next
+					step</button>
+				<a href="#summary"><button class="btn btn-primary"
+						ng-click="setSummary()">Conclude</button></a>
+			</div>
+		</div>
+	</div>
+	<div id="step3" ng-if="wizardProgress[2].showCard" class="card-border">
+	{{summary}}
+	<div class="container">
+	<div class="form-group">
+  <label for="sel1">Select list:</label>
+  <select multiple class="form-control" id="sel1" ng-model="wizardProgress[2].plusOptions">
+    <option>Earn 4% interest on daily balances, quarterly</option>
+    <option>Get free chequebooks </option>
+    <option>Enjoy high cash transaction limits</option>
+    <option>Get entertainment benefits</option>
+    <option>Maintain account balance with flexibility</option>
+    <option>Avail locker services at a preferential price</option>
+    <option>Earn eDGE Loyalty Rewards</option>
+  </select>
+  <button class="btn btn-primary"
+						ng-click="preProgress(3)">Previous step</button>
+					<button class="btn btn-primary"
+						ng-click="trackProgress(3)">Next step</button>
+					<a href="#summary"><button class="btn btn-primary"
+						ng-click="setSummary()">Conclude</button></a>
+</div>
+	</div> </div>
+	<div id="step4" ng-if="wizardProgress[3].showCard" class="card-border">
+	{{summary}}
+	<div class="checkbox">
+  <label><input type="checkbox" ng-model="wizardProgress[3].isOptedForPremium">Check to opt for Premium account features</label>
+</div> {{wizardProgress.step4.isOptedForPremium}}
+<div class="form-group">
+					<button class="btn btn-primary"
+						ng-click="preProgress(4)">Previous step</button>
+					<a href="#summary"><button class="btn btn-primary"
+						ng-click="setSummary()">Conclude</button></a>
+				</div>
+</div>
+	</div>
+	</form>

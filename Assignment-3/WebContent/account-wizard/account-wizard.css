@@ -1,0 +1,114 @@
+.track-progress {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.track-progress li {
+	list-style-type: none;
+	display: inline-block;
+	position: relative;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	background-color: #eaf1f7;
+}
+
+.track-progress[data-steps="3"] li {
+	width: 20%;
+}
+
+.track-progress[data-steps="4"] li {
+	width: 25%;
+}
+
+.track-progress[data-steps="5"] li {
+	width: 20%;
+}
+
+.track-progress[data-steps="6"] li {
+	width: 15%;
+}
+
+.track-progress li>span {
+	display: block;
+	color: #999;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.track-progress li.done>span {
+	color: #666;
+	background-color: #99bcdb;
+}
+
+.track-progress li>span:after,.track-progress li>span:before {
+	content: "";
+	display: block;
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: solid transparent;
+	border-left-color: #f0f0f0;
+	border-width: 15px;
+}
+
+.track-progress li>span:after {
+	top: -5px;
+	z-index: 1;
+	border-left-color: white;
+	border-width: 20px;
+}
+
+.track-progress li>span:before {
+	z-index: 2;
+}
+
+.track-progress li.done+li>span:before {
+	border-left-color: #ccc;
+}
+
+.track-progress li:first-child>span:after,.track-progress li:first-child>span:before
+	{
+	display: none;
+}
+
+.track-progress li:first-child i,.track-progress li:last-child i {
+	display: block;
+	height: 0;
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: solid transparent;
+	border-left-color: white;
+	border-width: 15px;
+}
+
+.track-progress li:last-child i {
+	left: auto;
+	right: -15px;
+	border-left-color: transparent;
+	border-top-color: white;
+	border-bottom-color: white;
+}
+
+.new-line {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.left-margin {
+	padding-left: 10px;
+}
+
+.card-border {
+	border: 1px solid #337ab7;
+	border-radius: 3px;
+	padding: 10px;
+	height: 310px;
+}

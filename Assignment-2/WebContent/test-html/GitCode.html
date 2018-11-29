@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Controller Examples</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-mocks.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var app = angular.module('productsApp', []);
+			app.controller('ProductsController', function productsController($scope, ProductService) {
+			  $scope.products = ProductService();
+			});
+			app.service('ProductService', function productService() {
+				return function getProducts() {
+					return [{ name: 'Chai' }, { name: 'Syrup' }];
+				}
+			});
+			describe('products tests', function () {
+				
+				beforeEach(module('productsApp'));
+				var $scope;
+				var $controller;
+				
+				describe('no-mocking of service', function () {
+					beforeEach(inject(function(_$controller_) {
+					 	$controller = _$controller_;
+					 	$scope = {};
+					}));
+	
+					it('should return products list on load', function () {
+						var productsController = $controller('ProductsController', { $scope: $scope });
+						expect($scope.products).toEqual([{ name: 'Chai' }, { name: 'Syrup' }]);
+					});
+				});
+				describe('in-line mocking of service', function () {
+					beforeEach(inject(function(_$controller_) {
+					 	$controller = _$controller_;
+					 	$scope = {};
+					}));
+					it('should return products list on load', function () {
+						var mockService = function ProductService() {
+							return [{ name: 'Tea' }, { name: 'Syrup' }];
+						}
+						var productsController = $controller('ProductsController', { $scope: $scope, ProductService: mockService });
+						expect($scope.products).toEqual([{ name: 'Tea' }, { name: 'Syrup' }]);
+					});
+				});
+				describe('mock.module mocking of service', function () {
+					beforeEach(angular.mock.module(function($provide) { 
+	            		$provide.service('ProductService', function mockService() {
+	            			return function mockGetProducts() {
+								return [{ name: 'Tea' }, { name: 'Syrup' }];
+							}
+						});
+	        		}));
+					// Note that ordering is important! Controller service must be registered after mocks.
+					beforeEach(inject(function(_$controller_) {
+					 	$controller = _$controller_;
+					 	$scope = {};
+					}));
+					it('should return products list on load', function () {
+						var productsController = $controller('ProductsController', { $scope: $scope });
+						expect($scope.products).toEqual([{ name: 'Tea' }, { name: 'Syrup' }]);
+					});
+				});
+			});
+			describe('inline controller example', function () {
+	
+				beforeEach(module('productsApp'));
+				var $scope;
+				var $controller;
+					
+				beforeEach(inject(function(_$controller_) {
+					$controller = _$controller_;
+					$scope = {};
+				}));
+				it('should return products list on load', function () {
+					var productsController = $controller(function inlineController($scope, ProductService) {
+			  			$scope.products = ProductService();
+					}, { $scope: $scope });
+					expect($scope.products).toEqual([{ name: 'Chai' }, { name: 'Syrup' }]);
+				});
+			});
+			describe('inline controller example using controllerProvider', function () {
+	
+				beforeEach(module('productsApp'));
+				var $scope;
+				var $controller;
+					
+				beforeEach(module(function($controllerProvider) {
+					$controllerProvider.register('inlineController', function($scope, ProductService) {
+						$scope.products = ProductService();
+					});
+				}));
+				beforeEach(inject(function(_$controller_) {
+					$controller = _$controller_;
+					$scope = {};
+				}));
+				it('should return products list on load', function () {
+					var productsController = $controller('inlineController', { $scope: $scope });
+					expect($scope.products).toEqual([{ name: 'Chai' }, { name: 'Syrup' }]);
+				});
+			});
+			describe('controller example using bindings', function () {
+			
+				beforeEach(module('productsApp'));
+				var $scope;
+				var $controller;
+				var bindings = { foo: 'bar' };
+				
+				beforeEach(module(function($controllerProvider) {
+					$controllerProvider.register('inlineController', function() {
+						expect(this.data).toBe(bindings);
+					});
+				}));
+				beforeEach(inject(function(_$controller_) {
+				 	$controller = _$controller_;
+				 	$scope = {};
+				}));
+				it('should return products list on load', function () {
+					var productsController = $controller('inlineController', { $scope: $scope },  { data: bindings });
+				});
+			});
+			
+		</script>
+
+	</body>
+</html>

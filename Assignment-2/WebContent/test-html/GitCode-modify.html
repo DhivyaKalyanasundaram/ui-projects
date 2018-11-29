@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Controller Examples</title>
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/jasmine-html.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/2.3.3/boot.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://code.angularjs.org/1.5.6/angular-mocks.js"></script>
+<script type="text/javascript"
+	src="../common/values/buddy-list-values.js"></script>
+	<script type="text/javascript" src="../buddy-page/buddy-list-app.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+	buddyListApp.controller('buddyListController', function buddiesController(
+				$scope, buddyListService, buddyListValues) {
+			$scope.buddies = buddyListService();
+		});
+	buddyListApp.service('buddyListService', function buddyListService() {
+			return function getBuddies() {
+				return [ {
+					name : 'Chai'
+				}, {
+					name : 'Syrup'
+				} ];
+			}
+		});
+		describe('buddy list tests', function() {
+
+			beforeEach(module('buddyListApp'));
+			var $scope;
+			var $controller;
+
+			/*describe('no-mocking of service', function () {
+				beforeEach(inject(function(_$controller_) {
+				 	$controller = _$controller_;
+				 	$scope = {};
+				}));
+
+				it('should return buddies list on load', function () {
+					var buddiesController = $controller('buddyListController', { $scope: $scope });
+					expect($scope.buddies).toEqual([{ name: 'Chai' }, { name: 'Syrup' }]);
+				});
+			});
+			 */
+			describe('in-line mocking of service', function() {
+				beforeEach(inject(function(_$controller_) {
+					$controller = _$controller_;
+					$scope = {};
+				}));
+				it('should return buddies list on load', function() {
+					var mockService = function buddyListService() {
+						return [ {
+							"id": "5",
+							"user_name": "john.abraham@gmail.com",
+							"priority": 1
+						},{
+							"id": "3",
+							"user_name": "anand.sahil@gmail.com",
+							"priority": 3
+						} ];
+					}
+					var mockValues = function buddyListValue() {
+						return { messages : "" };
+					}
+					var buddiesController = $controller('buddyListController',
+							{
+								$scope : $scope,
+								buddyListService : mockService,
+								buddyListValues : mockValues
+							});
+					expect($scope.buddies).toEqual([ {
+						"id": "5",
+						"user_name": "john.abraham@gmail.com",
+						"priority": 1
+					},{
+						"id": "3",
+						"user_name": "anand.sahil@gmail.com",
+						"priority": 3
+					} ]);
+				});
+			});
+		});
+	</script>
+
+</body>
+</html>

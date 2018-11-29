@@ -1,0 +1,22 @@
+/*display error message inside form & table
+*/
+form table span {
+	color: red;
+	font-size: 14px;
+}
+
+form table span.success-msg {
+	color: blue;
+	font-size: 14px;
+}
+
+
+.widget-title {
+	text-align: center;
+}
+
+input:required:focus {
+	border: 1px solid red;
+	outline: none;
+}
+</style>
