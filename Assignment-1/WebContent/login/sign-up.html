@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="signupApp">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sign up challenge</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="sign-up.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	
+<script type="text/javascript" src="sign-up-app.js"></script>
+<script type="text/javascript" src="sign-up-value.js"></script>
+<script type="text/javascript" src="sign-up-controller.js"></script>
+<script type="text/javascript" src="sign-up-factory-service.js"></script>
+<script type="text/javascript" src="../common/filters/date-filter.js"></script>
+
+
+<script>
+	
+</script>
+</head>
+<body ng-controller="signupController">
+<div>
+	<div class="container-fluid" style="width:400px;align:center">
+		<h2 style="text-align:center">Signup</h2>
+		<div class="container-fluid">
+			<div class="alert alert-success" ng-if="userMessage">
+				<strong>Success!</strong> {{userMessage}}
+			</div>
+			<div class="alert alert-danger" ng-if="formError">
+				<strong>Error!</strong> {{formError}}
+			</div>
+			<form name="signupForm" class="form-horizontal">
+				<div class="form-group {{user.username.isValid}}">
+					<!-- User name field !-->
+					<label for="t_username" class="control-label">User name</label> <input
+						type="text" class="form-control" id="t_username" name="t_username"
+						placeholder="username@domain.com"
+						aria-describedby="t_username_help" ng-model="user.username.value"
+						ng-maxlength="56" ng-required="true">
+					<p id="t_username_help" class="help-block"
+						ng-show="signupForm.t_username.$error.maxlength">User name
+						maximum length is 56</p>
+				</div>
+
+				<div class="form-group {{user.password.isValid}}">
+					<!-- Password field !-->
+					<label for="t_password" class="control-label">Password</label> <input
+						type="password" class="form-control" id="t_password"
+						name="t_password" aria-describedby="t_password_help"
+						ng-model="user.password.value" ng-minlength="6" ng-required="true"
+						ng-change="isPasswordMatch(user)">
+					<p id="t_password_help" class="help-block"
+						ng-show="signupForm.t_password.$error.minlength">Password
+						minimum length is 6</p>
+				</div>
+
+				<div class="form-group {{user.confirmPassword.isValid}}">
+					<!-- Confirm password field !-->
+					<label for="t_confirmPassword" class="control-label">Confirm
+						password</label> <input type="password" class="form-control"
+						id="t_confirmPassword" name="t_confirmPassword"
+						aria-describedby="t_confirmPassword_help"
+						ng-model="user.confirmPassword.value" ng-required="true"
+						ng-change="isPasswordMatch(user)">
+					<p id="t_confirmPassword_help" class="help-block"
+						ng-show="isPasswordNotMatch && signupForm.t_password.$dirty && signupForm.t_confirmPassword.$dirty">Passwords
+						does not match</p>
+				</div>
+
+				<div class="form-group {{user.firstname.isValid}}">
+					<!-- First name field !-->
+					<label for="t_firstname" class="control-label">First name</label> <input
+						type="text" class="form-control" id="t_firstname"
+						name="t_firstname" aria-describedby="t_firstname_help"
+						ng-model="user.firstname.value" placeholder="first"
+						ng-maxlength="50" ng-required="true" ng-pattern="namePattern">
+					<p id="t_firstname_help" class="help-block"
+						ng-show="signupForm.t_firstname.$error.pattern">First name can
+						have only alphabets</p>
+				</div>
+
+				<div class="form-group {{user.lastname.isValid}}">
+					<!-- Last name field !-->
+					<label for="t_lastname" class="control-label">Last name</label> <input
+						type="text" class="form-control" id="t_lastname" name="t_lastname"
+						aria-describedby="t_lastname_help" ng-model="user.lastname.value"
+						placeholder="last" ng-maxlength="50" ng-pattern="namePattern">
+					<p id="t_lastname_help" class="help-block"
+						ng-show="signupForm.t_lastname.$error.pattern">Last name can
+						have only alphabets</p>
+				</div>
+
+
+				<div class="form-group {{user.birthdate.isValid}}">
+					<!-- Birthdate field !-->
+					<label for="t_birthdate" class="control-label">Birth date</label> <input
+						type="text" class="form-control" id="t_birthdate"
+						name="t_birthdate" aria-describedby="t_birthdate_help"
+						ng-model="user.birthdate.value" placeholder="MM/DD/YYYY"
+						ng-required="true" ng-pattern="datePattern">
+					<p id="t_birthdate_help" class="help-block"
+						ng-show="signupForm.t_birthdate.$error.pattern">Birth date is
+						invalid</p>
+				</div>
+				<div style="text-align:center">
+					<button class="btn btn-primary" ng-disabled="signupForm.$invalid"
+						ng-click="signup(user)">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

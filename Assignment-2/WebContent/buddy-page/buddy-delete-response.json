@@ -1,0 +1,10 @@
+{
+	"comment": "the error_details will be present in case of response status between 399 to 600 or 'status' parameter is other than success, user_message will have corresponding error/success message from the server",
+	"error_details": {
+		"error_code": "",
+		"error_message": "",
+		"error_description": ""
+	},
+	"status": "success",
+	"user_message": "User <buddy_name> deleted successfully."
+}

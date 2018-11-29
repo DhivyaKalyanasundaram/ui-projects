@@ -1,0 +1,60 @@
+{
+	"_comment": "data format has to be generic and should act independently from UI necessities",
+	"buddies": [
+		{
+			"id": "5",
+			"user_name": "john.abraham@gmail.com",
+			"first_name": "John",
+			"last_name": "Abraham",
+			"status": "Available",
+			"email_address": "john.abraham@gmail.com",
+			"birthdate": "07/07/1977",
+			"last_sign_in": "N/A",
+			"priority": 1
+		},{
+			"id": "3",
+			"user_name": "anand.sahil@gmail.com",
+			"first_name": "Anand",
+			"last_name": "Sahil",
+			"status": "Offline",
+			"email_address": "anand.sahil@gmail.com",
+			"birthdate": "03/05/1978",
+			"last_sign_in": "04/04/2017 14:30:49",
+			"priority": 3
+		},
+		{
+			"id": "2",
+			"user_name": "deepika.chopra@gmail.com",
+			"first_name": "Deepika",
+			"last_name": "Chopra",
+			"status": "Idle",
+			"email_address": "deepika.chopra@gmail.com",
+			"birthdate": "01/21/1982",
+			"last_sign_in": "N/A",
+			"priority": 2
+		},
+		
+		{
+			"id": "4",
+			"user_name": "ganesh.thirunavu@gmail.com",
+			"first_name": "Ganesh",
+			"last_name": "Thirunavu",
+			"status": "Busy",
+			"email_address": "ganesh.thirunavu@gmail.com",
+			"birthdate": "09/17/1983",
+			"last_sign_in": "N/A",
+			"priority": 4
+		},
+		{
+			"id": "1",
+			"user_name": "rahul.davalikar@gmail.com",
+			"first_name": "Rahul",
+			"last_name": "Davalikar",
+			"status": "Available",
+			"email_address": "rahul.davalikar@gmail.com",
+			"birthdate": "12/12/1980",
+			"last_sign_in": "N/A",
+			"priority": 5
+		}
+	]
+}

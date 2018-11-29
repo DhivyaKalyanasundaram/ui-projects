@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html ng-app="buddyListApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>The Buddy List Challenge</title>
+<link rel="stylesheet" href="buddy-list.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script type="text/javascript" src="buddy-list-app.js"></script>
+<script type="text/javascript" src="buddy-list-controller.js"></script>
+</head>
+<body ng-controller="buddyListController">
+	<div class="container-fluid center-align custom-padding">
+		<form name="buddyForm1">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search"
+					name="t_search" ng-model="keyword">
+				<div class="input-group-btn">
+					<button class="btn btn-default" ng-click="search(keyword)">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="container-fluid center-align">
+		<div class="alert alert-success" ng-if="userMessage">
+			{{userMessage}}</div>
+		<div class="alert alert-danger" ng-if="formError">
+			<strong>Error!</strong> {{formError}}
+		</div>
+	</div>
+	<form name="addBuddyForm">
+		<div class="container-fluid center-align">
+			<div id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="card custom-card"
+					ng-repeat="buddy in resultBuddyList | orderBy:'priority' | filter: priorityFilter track by $index">
+					<div class="custom-card-header card-header" role="tab"
+						id="heading{{buddy.id}}" ng-click="buddyClick(buddy)">
+						<h5 class="mb-0">
+							<a class="collapsed" data-toggle="collapse"
+								data-parent="#accordion" href="#collapse{{buddy.id}}"
+								aria-expanded="false" aria-controls="collapse{{buddy.id}}">
+								<strong>User:</strong>{{buddy.user_name}}, {{buddy.first_name}},
+								{{buddy.last_name}}, {{buddy.status}}
+							</a>
+						</h5>
+					</div>
+					<div id="collapse{{buddy.id}}" class="collapse custom-card-block"
+						role="tabpanel" aria-labelledby="heading{{buddy.id}}">
+						<div class="card-block">
+							<strong>Email:</strong>{{buddy.email_address}}, <strong>Born:</strong>{{buddy.birthdate}}
+							<span ng-if="buddy.status==='Offline'">, <strong>Last
+									sign-in:</strong>{{buddy.last_sign_in}}
+							</span>
+						</div>
+						<div class="card-block">
+							<a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+								ng-click="moveUp(buddy)" ng-if="buddy.priority !== 1"> <span
+								class="glyphicon glyphicon-arrow-up"></span> Up
+							</a> <a href="#" class="btn btn-info btn-sm" data-toggle="modal"
+								ng-click="moveDown(buddy)"
+								ng-if="buddy.priority !== resultBuddyList.length"> <span
+								class="glyphicon glyphicon-arrow-down"></span> Down
+							</a>
+
+							<button type="button" class="btn btn-info btn-sm"
+								data-toggle="modal" ng-click="deleteBuddy(buddy)"
+								data-target="#myModal">Delete buddy</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="container-fluid center-align custom-padding">
+			<button type="button" class="btn btn-info btn-sm" data-toggle="modal"
+				ng-click="add(buddy)" data-target="#myAddModal">Add buddy</button>
+		</div>
+
+
+
+		<div class="container-fluid">
+
+			<!-- Modal - warning to delete -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">{{warningTopic}}</h4>
+						</div>
+						<div class="modal-body">
+							<p>{{warningMessage}}</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="okDelete()">Ok</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="cancelDelete()">Cancel</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<!-- Modal - add buddy -->
+			<div class="modal fade" id="myAddModal" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">{{addBuddyTopic}}</h4>
+						</div>
+						<div class="modal-body">
+							<p>{{addBuddyMessage}}</p>
+							<!-- <form name="addBuddyForm" class="form-horizontal">  -->
+							<div class="form-group {{buddy.user_name.isValid}}">
+								<!-- User name field !-->
+								<label for="t_username" class="control-label">User name</label>
+								<input type="text" class="form-control" id="t_username"
+									name="t_username" placeholder="username@domain.com"
+									aria-describedby="t_username_help"
+									ng-model="buddy.user_name.value" ng-required="true">
+								<p id="t_username_help" class="help-block"
+									ng-show="addBuddyForm.t_username.$error.required && addBuddyForm.t_username.$dirty">User name
+									is mandatory</p>
+							</div>
+							<div class="form-group {{buddy.first_name.isValid}}">
+								<!-- First name field !-->
+								<label for="t_firstname" class="control-label">First
+									name</label> <input type="text" class="form-control" id="t_firstname"
+									name="t_firstname" placeholder="first"
+									aria-describedby="t_firstname_help"
+									ng-model="buddy.first_name.value" ng-required="true">
+								<p id="t_firstname_help" class="help-block"
+									ng-show="addBuddyForm.t_firstname.$error.required && addBuddyForm.t_firstname.$dirty">First
+									name is mandatory</p>
+							</div>
+							<div class="form-group {{buddy.last_name.isValid}}">
+								<!-- Last name field !-->
+								<label for="t_lastname" class="control-label">Last name</label>
+								<input type="text" class="form-control" id="t_lastname"
+									name="t_lastname" placeholder="last"
+									aria-describedby="t_lastname_help"
+									ng-model="buddy.last_name.value" ng-required="true">
+								<p id="t_lastname_help" class="help-block"
+									ng-show="addBuddyForm.t_lastname.$error.required && addBuddyForm.t_lastname.$dirty">Last name
+									is mandatory</p>
+							</div>
+							<div class="form-group {{buddy.email_address.isValid}}">
+								<!-- Last name field !-->
+								<label for="t_email" class="control-label">Email address</label>
+								<input type="text" class="form-control" id="t_email"
+									name="t_email" placeholder="username@domain.com"
+									aria-describedby="t_email_help"
+									ng-model="buddy.email_address.value" ng-required="true">
+								<p id="t_email_help" class="help-block"
+									ng-show="addBuddyForm.t_email.$error.required && addBuddyForm.t_email.$dirty">Email
+									address is mandatory</p>
+							</div>
+							<div class="form-group {{buddy.birthdate.isValid}}">
+								<!-- Last name field !-->
+								<label for="t_birthdate" class="control-label">Birth
+									date</label> <input type="text" class="form-control" id="t_birthdate"
+									name="t_birthdate" placeholder="MM/DD/YYYY"
+									aria-describedby="t_birthdate_help"
+									ng-model="buddy.birthdate.value" ng-required="true">
+								<p id="t_birthdate_help" class="help-block"
+									ng-show="addBuddyForm.t_birthdate.$error.required && addBuddyForm.t_birthdate.$dirty">Birth
+									date is mandatory</p>
+							</div>
+							<!-- </form>  -->
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="okAdd(buddy)">Add</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="cancelAdd()">Cancel</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>
